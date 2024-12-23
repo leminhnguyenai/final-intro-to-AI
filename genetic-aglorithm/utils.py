@@ -3,7 +3,7 @@ def generate_random_solutions(solution_length):
     max = min
 
     for i in range(solution_length - 1):
-        max = max + pow(2, i)
+        max += pow(2, i)
 
     random_solutions = []
 
