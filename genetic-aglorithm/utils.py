@@ -8,6 +8,10 @@ def generate_random_solutions(solution_length):
     random_solutions = []
 
     for i in range(min, max):
-        random_solutions.append(str(bin(i)[2:]))
+        random_solutions.append(generate_bin_as_str(i))
 
     return random_solutions
+
+
+def generate_bin_as_str(num):
+    return str(bin(num)[2:])

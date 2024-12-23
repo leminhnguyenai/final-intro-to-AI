@@ -1,4 +1,5 @@
 import utils
+import random
 
 
 class Genetic_algorithm:
@@ -13,7 +14,10 @@ class Genetic_algorithm:
 
     def run(self):
         for solution in self.population:
-            print(self.fitness(solution))
+            print(solution)
+            solution = self.mutate(solution)
+            print(solution)
+            print("")
 
     def fitness(self, solution):
         current_capacity = 0
@@ -29,3 +33,18 @@ class Genetic_algorithm:
             return -1
 
         return current_capacity
+
+    def mutate(self, solution):
+        random_gene_to_mutate_index = random.randint(0, len(solution) - 1)
+
+        solution_as_array = list(solution)
+
+        gene_to_be_mutated = int(solution_as_array[random_gene_to_mutate_index])
+        gene_to_be_mutated += 1
+        gene_to_be_mutated %= 2
+
+        solution_as_array[random_gene_to_mutate_index] = str(gene_to_be_mutated)
+
+        mutated_solution = "".join(solution_as_array)
+
+        return mutated_solution
