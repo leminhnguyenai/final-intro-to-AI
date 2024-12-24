@@ -12,10 +12,20 @@ class Genetic_algorithm:
 
         self.population = utils.generate_random_solutions(solution_length)
 
-    def run(self):
-        self.selection()
+    def run(self, cycle_num):
+        if cycle_num == 0:
+            self.ranking()
+            print(
+                f"{self.fitness(self.population[len(self.population)-1])} {self.population[len(self.population)-1]}"
+            )
+            return
 
-    def selection(self):
+        self.ranking()
+        self.generate_new_generation()
+
+        self.run(cycle_num - 1)
+
+    def ranking(self):
         prev_population_count = len(self.population)
 
         for final in range(prev_population_count, 1, -1):
@@ -29,23 +39,51 @@ class Genetic_algorithm:
                 self.population[i] = self.population[i + 1]
                 self.population[i + 1] = swap
 
-        print(self.population[len(self.population) - 1])
-        print(self.population[len(self.population) - 2])
+        def is_valid_solution(solution):
+            return self.fitness(solution) != -1
+
+        filtered_population = filter(is_valid_solution, self.population)
+        self.population = list(filtered_population)
+
+    def generate_new_generation(self):
+        # Initiate new population with 2 highest solution first
+        current_population_length = len(self.population)
+
+        current_solution_dad = self.population[current_population_length - 1]
+        current_solution_mom = self.population[current_population_length - 2]
+        new_population = [current_solution_dad, current_solution_mom]
+
+        while current_population_length > 1:
+            current_population_length -= 2
+
+            current_solution_dad = self.population[current_population_length - 1]
+            current_solution_mom = self.population[current_population_length - 2]
+
+            new_child_solution_1, new_child_solution_2 = self.crossover(
+                current_solution_dad, current_solution_mom
+            )
+
+            new_population.append(new_child_solution_1)
+            new_population.append(new_child_solution_2)
+
+        self.population = new_population
 
     def fitness(self, solution):
         current_capacity = 0
+        current_price = 0
         items_count = len(self.weights_list)
 
         for i in range(items_count):
             is_included = int(solution[i])
-            if is_included == 1:
+            if is_included == 0:
                 continue
-            current_capacity += self.weights_list[i] * self.prices_list[i]
+            current_capacity += self.weights_list[i]
+            current_price += self.prices_list[i]
 
         if current_capacity > self.max_capacity:
             return -1
 
-        return current_capacity
+        return current_price
 
     def mutate(self, solution):
         random_gene_to_mutate_index = random.randint(0, len(solution) - 1)
@@ -66,9 +104,9 @@ class Genetic_algorithm:
         random_pos_to_cut = random.randint(1, len(solution_dad) - 2)
 
         dad_dominant_gene = solution_dad[:random_pos_to_cut]
-        dad_recessive_gene = solution_dad[random_pos_to_cut + 1 :]
+        dad_recessive_gene = solution_dad[random_pos_to_cut:]
         mom_dominant_gene = solution_mom[:random_pos_to_cut]
-        mom_recessive_gene = solution_mom[random_pos_to_cut + 1 :]
+        mom_recessive_gene = solution_mom[random_pos_to_cut:]
 
         new_child_solution_1 = dad_dominant_gene + mom_recessive_gene
         new_child_solution_2 = mom_dominant_gene + dad_recessive_gene
