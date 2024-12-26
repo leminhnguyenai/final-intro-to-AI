@@ -86,6 +86,19 @@ class Genetic_algorithm:
 
         return current_price
 
+    def crossover(self, solution_mom, solution_dad):
+        random_pos_to_cut = random.randint(1, len(solution_dad) - 2)
+
+        dad_dominant_gene = solution_dad[:random_pos_to_cut]
+        dad_recessive_gene = solution_dad[random_pos_to_cut:]
+        mom_dominant_gene = solution_mom[:random_pos_to_cut]
+        mom_recessive_gene = solution_mom[random_pos_to_cut:]
+
+        new_child_solution_1 = dad_dominant_gene + mom_recessive_gene
+        new_child_solution_2 = mom_dominant_gene + dad_recessive_gene
+
+        return new_child_solution_1, new_child_solution_2
+
     def mutate(self, solution):
         random_gene_to_mutate_index = random.randint(0, len(solution) - 1)
 
@@ -100,16 +113,3 @@ class Genetic_algorithm:
         mutated_solution = "".join(solution_as_array)
 
         return mutated_solution
-
-    def crossover(self, solution_mom, solution_dad):
-        random_pos_to_cut = random.randint(1, len(solution_dad) - 2)
-
-        dad_dominant_gene = solution_dad[:random_pos_to_cut]
-        dad_recessive_gene = solution_dad[random_pos_to_cut:]
-        mom_dominant_gene = solution_mom[:random_pos_to_cut]
-        mom_recessive_gene = solution_mom[random_pos_to_cut:]
-
-        new_child_solution_1 = dad_dominant_gene + mom_recessive_gene
-        new_child_solution_2 = mom_dominant_gene + dad_recessive_gene
-
-        return new_child_solution_1, new_child_solution_2
