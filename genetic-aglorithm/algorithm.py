@@ -15,15 +15,16 @@ class Genetic_algorithm:
     def run(self, cycle_num):
         if cycle_num == 0:
             self.ranking()
-            print(
-                f"{self.fitness(self.population[len(self.population)-1])} {self.population[len(self.population)-1]}"
-            )
-            return
+            fitness_score = self.fitness(self.population[len(self.population) - 1])
+            solution = self.population[len(self.population) - 1]
+
+            print(f"{fitness_score} {solution}")
+            return fitness_score, solution
 
         self.ranking()
         self.generate_new_generation()
 
-        self.run(cycle_num - 1)
+        return self.run(cycle_num - 1)
 
     def ranking(self):
         prev_population_count = len(self.population)

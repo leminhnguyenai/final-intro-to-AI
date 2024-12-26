@@ -87,8 +87,7 @@ START
     Generate initial population
     Calculate the fitness
     REPEAT
-        Perform selection
-        Perform Crosover
+        Perform Selection + crossover at the same time
         Perform Mutation
         Calculate fitness
     UNTIL population converges
