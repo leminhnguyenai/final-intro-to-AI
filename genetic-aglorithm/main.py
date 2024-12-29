@@ -44,7 +44,7 @@ for input in inputs:
 
     alg = algorithm.Genetic_algorithm(weights_list, prices_list, capacity)
 
-    fitness_score, solution = alg.run(100000000000)
+    fitness_score, solution = alg.run(20)
 
     solution_as_arr = list(solution)
 
@@ -66,6 +66,7 @@ for input in inputs:
     )
 
 print(output)
+print(f"{len(inputs)} problem solved")
 
 f = open(output_path, "w")
 f.write(output)

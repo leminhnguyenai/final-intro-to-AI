@@ -15,21 +15,14 @@ class Genetic_algorithm:
     def run(self, cycle_num):
         if cycle_num == 0:
             self.ranking()
-            final_best_solution = self.population[len(self.population) - 1]
-            final_best_fitness_score = self.fitness(final_best_solution)
+            fitness_score = self.fitness(self.population[len(self.population) - 1])
+            solution = self.population[len(self.population) - 1]
 
-            print(f"{final_best_fitness_score} {final_best_solution}")
-            return final_best_fitness_score, final_best_solution
+            # print(f"{fitness_score} {solution}")
+            return fitness_score, solution
 
         self.ranking()
         self.generate_new_generation()
-
-        current_best_solution = self.population[len(self.population) - 1]
-        current_best_fitness_score = self.fitness(current_best_solution)
-
-        if self.is_converged(current_best_solution):
-            print(f"{current_best_fitness_score} {current_best_solution}")
-            return current_best_fitness_score, current_best_solution
 
         return self.run(cycle_num - 1)
 
@@ -120,19 +113,3 @@ class Genetic_algorithm:
         mutated_solution = "".join(solution_as_array)
 
         return mutated_solution
-
-    # Function to check if the algorithm reach convergence or not
-    def is_converged(self, best_solution):
-        best_solution_as_array = list(best_solution)
-
-        for i in range(len(best_solution_as_array)):
-            gene = int(best_solution_as_array[i])
-            if gene == 0:
-                better_solution_as_array = best_solution_as_array.copy()
-                # Add 1 more object to the bag and check if the fitness score is valid or not
-                better_solution_as_array[i] = "1"
-                better_solution = "".join(better_solution_as_array)
-                if self.fitness(better_solution) != -1:
-                    return False
-
-        return True
