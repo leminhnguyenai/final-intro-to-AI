@@ -44,7 +44,7 @@ for input in inputs:
 
     alg = algorithm.Genetic_algorithm(weights_list, prices_list, capacity)
 
-    fitness_score, solution = alg.run(21)
+    fitness_score, solution = alg.run(100000000000)
 
     solution_as_arr = list(solution)
 
